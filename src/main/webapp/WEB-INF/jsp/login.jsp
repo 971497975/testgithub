@@ -70,7 +70,7 @@ function deng(){
 	<div class="ConText">
 	<div class="ConText_Left"><img src="images/img1.jpg" /></div>
 	<div class="ConText_Right">
-	<h1>测试github666111</h1>
+	<h1>测试github22222222</h1>
 		<div class="ConText_RInfo">
 			<form class="form form-horizontal" action="<%=basePath%>/main.do" method="post" id="deng">
 				<input type="text" id="policeNumOrID" name="policeNumOrID" class="input_name" placeholder="警号/身份证号"/>
