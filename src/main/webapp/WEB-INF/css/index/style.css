@@ -1,0 +1,51 @@
+/* default */
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td { margin: 0; padding: 0; }
+body, button, input, select, textarea { font: 12px/1.5 tahoma,arial,\5b8b\4f53; color: #333; }
+body,html{font-family:microsoft yahei,sans-serif;height:100%;}
+h1, h2, h3, h4, h5, h6 { font-size: 100%; }
+address, cite, dfn, em, var { font-style: normal; }
+code, kbd, pre, samp { font-family: courier new,courier,monospace; }
+small { font-size: 12px; }
+ul, ol { list-style: none; margin:0;padding:0;}
+li{list-style-type:none;}
+a { text-decoration: none; color: #333; }
+a:hover { text-decoration: none;}
+sup { vertical-align: text-top; }
+sub { vertical-align: text-bottom; }
+legend { color: #000; }
+fieldset, img, button { border: 0; }
+button, input, select, textarea { font-size: 100%; }
+table { border-collapse: collapse; border-spacing: 0; margin:0;padding:0;}
+img{border:0;}
+.clearfix:after { content: "\0020"; display: block; height: 0; clear: both; }
+.clearfix { _zoom: 1; }
+*:first-child+html .clearfix { zoom: 1; }
+.fl{float:left;}
+.fr{float:right;}
+.elli{overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+.ime{ime-mode:disabled;}
+
+body{background: url(../../images/title_b.png)no-repeat;}
+.content{width:1162px;margin:0 auto;}
+
+*html{padding:0px} 
+/* Clear Fix */ 
+.clearfix:after { 
+content:”.”; 
+display:block; 
+height:0; 
+clear:both; 
+visibility:hidden; 
+} 
+.clearfix { 
+display:inline-block; 
+} 
+/* Hide from IE Mac */ 
+.clearfix {display:block;} 
+/* End hide from IE Mac */ 
+/* end of clearfix */ 
+
+
+
+
+

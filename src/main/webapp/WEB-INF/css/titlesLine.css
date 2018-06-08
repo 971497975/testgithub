@@ -1,0 +1,9 @@
+@CHARSET "UTF-8";
+
+.titles {
+	width: 80px;
+	display: inline-block;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}

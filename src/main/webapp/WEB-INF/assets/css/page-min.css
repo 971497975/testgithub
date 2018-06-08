@@ -1,0 +1,54 @@
+.container{margin-left:0;margin-top:0;width:auto;padding:20px 10px 0 10px;}.detail-page,.form-page,.search-page{padding:0;}
+
+
+
+
+.grid {
+    border: 1px solid #cfcfcf;
+    width: 100%; margin-top:10px;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+.grid thead {
+    color: #000;
+    font-size: 12px;
+    font-weight: bold;
+}
+caption, th, td {
+    text-align: left;
+    font-weight: normal;
+    vertical-align: middle; font-size:12px;
+}
+.grid thead th {
+    height: 38px;
+    padding-left: 15px;
+    border-left: 1px solid #dadada;
+    border-right: 0;
+    border-bottom: 1px solid #dadada;
+    background-color: #f1f1f1;
+}
+.grid .grid-checkbox {
+    width: 50px;
+    padding-left: 0;
+    text-align: center;
+}
+.grid thead th:first-child {
+    border-left: 0;
+}
+.grid thead th {
+    height: 38px;
+    padding-left: 15px;
+    border-left: 1px solid #dadada;
+    border-right: 0;
+    border-bottom: 1px solid #dadada;
+    background-color: #f1f1f1;
+}
+.grid tbody td {
+    height: 14px;
+    padding: 10px 5px 10px 15px;
+    border-left: 1px solid #dadada;
+    border-bottom: 1px solid #dadada;
+    background: #fff;
+}

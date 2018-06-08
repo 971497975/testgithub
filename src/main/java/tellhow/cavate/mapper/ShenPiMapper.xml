@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="tellhow.cavate.mapper.ShenPiMapper">
+<cache></cache>
+  <resultMap id="LeaveResultMap" type="tellhow.cavate.pojo.Leave" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="startDate" property="startDate" jdbcType="DATE" />
+    <result column="endDate" property="endDate" jdbcType="DATE" />
+    <result column="leaveType" property="leaveType" jdbcType="VARCHAR" />
+    <result column="cause" property="cause" jdbcType="VARCHAR" />
+    <result column="createUser" property="createUser" jdbcType="VARCHAR" />
+    <result column="createTime" property="createTime" jdbcType="DATE" />
+    
+    <result column="dysprid" property="dysprid" jdbcType="VARCHAR" />
+    <result column="dyspryj" property="dyspryj" jdbcType="VARCHAR" />
+    <result column="dysprjg" property="dysprjg" jdbcType="VARCHAR" />
+    <result column="dysprsj" property="dysprsj" jdbcType="DATE" />
+    
+    <result column="desprid" property="desprid" jdbcType="VARCHAR" />
+    <result column="despryj" property="despryj" jdbcType="VARCHAR" />
+    <result column="desprjg" property="desprjg" jdbcType="VARCHAR" />
+    <result column="desprsj" property="desprsj" jdbcType="DATE" />
+    
+    <result column="dssprid" property="dssprid" jdbcType="VARCHAR" />
+    <result column="dsspryj" property="dsspryj" jdbcType="VARCHAR" />
+    <result column="dssprjg" property="dssprjg" jdbcType="VARCHAR" />
+    <result column="dssprsj" property="dssprsj" jdbcType="DATE" />
+    
+    <result column="dsisprid" property="dsisprid" jdbcType="VARCHAR" />
+    <result column="dsispryj" property="dsispryj" jdbcType="VARCHAR" />
+    <result column="dsisprjg" property="dsisprjg" jdbcType="VARCHAR" />
+    <result column="dsisprsj" property="dsisprsj" jdbcType="DATE" />
+  </resultMap>
+  
+      <!-- 1.待我审批 -->
+      <select id="getMySpList" resultMap="LeaveResultMap">
+	 	  select * from leave where  (dysprid=#{param1} and dysprjg is null)
+	 	  or (desprid=#{param1} and desprjg is null)
+	 	  or (dssprid=#{param1} and dssprjg is null)
+	 	  or (dsisprid=#{param1} and dsisprjg is null)
+	  </select>
+  
+  
+      <!-- 2.跟新审批状态 -->
+      <update id="updateLeaveById">
+	  	  update  leave set spState=#{spState},
+	  	  dyspryj=#{dyspryj},dysprjg=#{dysprjg},dysprsj=#{dysprsj},
+	  	  desprid=#{desprid},despryj=#{despryj},desprjg=#{desprjg},desprsj=#{desprsj},
+	  	  dssprid=#{dssprid},dsspryj=#{dsspryj},dssprjg=#{dssprjg},dssprsj=#{dssprsj},
+	  	  dsisprid=#{dsisprid},dsispryj=#{dsispryj},dsisprjg=#{dsisprjg},dsisprsj=#{dsisprsj}
+	  	  where id=#{id}
+	  </update>
+  
+  
+  
+  
+  
+</mapper>

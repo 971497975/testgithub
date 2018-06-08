@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="tellhow.cavate.mapper.HolidayMapper" >
+<cache></cache>
+  <resultMap id="HoliResultMap" type="tellhow.cavate.pojo.Holiday" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="holidayDate" property="holidayDate" jdbcType="DATE" />
+  </resultMap>
+  
+      <!-- 1.查询所有节假日 -->
+	  <select id="getHolidays" resultMap="HoliResultMap">
+	      select  *  from holiday order by  holidayDate desc
+	  </select>
+	  
+	  
+      <!-- 2.判断节假日是否已经添加 -->
+	  <select id="findExitHoliday" resultMap="HoliResultMap">
+	      select * from holiday where to_char(holidayDate,'YYYY-MM-DD')=#{holidayDate}
+	  </select>
+	  
+	  <!-- 3.添加节假日 -->
+      <insert id="addHoliday" parameterType="tellhow.cavate.pojo.Holiday">
+          insert into holiday (id,holidayDate) values (#{id},#{holidayDate})
+      </insert>
+      
+      
+      <!-- 4.删除节假日 -->
+      <delete id="deleteHoliday">
+          delete from holiday where id=#{param1}
+      </delete>
+      
+      
+</mapper>

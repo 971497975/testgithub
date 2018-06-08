@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="tellhow.cavate.mapper.UsersMapper" >
+<cache></cache>
+  <resultMap id="UsersResultMap" type="tellhow.cavate.pojo.Users" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="JH" property="JH" jdbcType="VARCHAR" />
+    <result column="SFZH" property="SFZH" jdbcType="VARCHAR" />
+    <result column="MM" property="MM" jdbcType="VARCHAR" />
+    <result column="ZSXM" property="ZSXM" jdbcType="VARCHAR" />
+    <result column="XB" property="XB" jdbcType="VARCHAR" />
+    <result column="HF" property="HF" jdbcType="VARCHAR" />
+    <result column="CJGZSJ" property="CJGZSJ" jdbcType="DATE" />
+    <result column="NXJTS" property="NXJTS" jdbcType="INTEGER" />
+    <result column="ZW" property="ZW" jdbcType="VARCHAR" />
+    <result column="ZWMC" property="ZWMC" jdbcType="VARCHAR" />
+    <result column="JG" property="JG" jdbcType="VARCHAR" />
+    <result column="role" property="role" jdbcType="VARCHAR" />
+    <result column="did" property="did" jdbcType="VARCHAR" />
+    <result column="bmmc" property="bmmc" jdbcType="VARCHAR" />
+    <result column="createTime" property="createTime" jdbcType="DATE" />
+  </resultMap>
+  
+  
+	  <!-- 1.根据警号或身份证号+密码,验证登录是否成功 -->
+	  <select id="userLogin" resultMap="UsersResultMap">
+	      select  *  from users  where (JH=#{param1} or SFZH=#{param1}) and MM=#{param2}
+	  </select>
+	  
+	  <!-- 2.根据警号或者身份证号查找用户是否存在 -->
+	  <select id="findExitUser" resultMap="UsersResultMap">
+	      select  *  from users  where JH=#{JH} or SFZH=#{SFZH} 
+	  </select>
+  
+      <!-- 3.添加用户 -->
+      <insert id="addUsers" parameterType="tellhow.cavate.pojo.Users">
+          insert into users (id,JH,SFZH,MM,ZSXM,XB,HF,CJGZSJ,ZW,ZWMC,JG,role,did,bmmc,createTime,NXJTS) values
+          (#{id},#{JH},#{SFZH},#{MM},#{ZSXM},#{XB},#{HF},#{CJGZSJ},#{ZW},#{ZWMC},#{JG},#{role},#{did},#{bmmc},#{createTime},#{NXJTS})
+      </insert>
+      
+      <!-- 修改用户 -->
+      <update id="updateUsers" parameterType="tellhow.cavate.pojo.Users">
+          update users set JH=#{JH},SFZH=#{SFZH},ZSXM=#{ZSXM},NXJTS=#{NXJTS},
+          XB=#{XB},HF=#{HF},ZW=#{ZW},ZWMC=#{ZWMC},JG=#{JG},role=#{role},did=#{did},bmmc=#{bmmc},CJGZSJ=#{CJGZSJ} where id=#{id}
+      </update>
+      
+      <!-- 4.用户数量 -->
+      <select id="getUserCount" resultType="int">
+         select count(*) from users where  ZSXM like '%${user.ZSXM}%' and JH like '%${user.JH}%' and did like '%${user.did}%' and ( did  in
+	    <foreach collection="uidList" item="uid" index="index" open="(" separator="," close=")">
+           #{uid}
+        </foreach> or did=#{BMBH} ) 
+	  </select>
+	  
+	 <!-- 5.分页显示当前用户列表-->
+     <select id="getUserList" resultMap="UsersResultMap"> 
+	    select * from ( select a.*, ROWNUM RN from (
+	        select *  from users  where  ZSXM like '%${user.ZSXM}%' and JH like '%${user.JH}%' and  did like '%${user.did}%' and( did  in
+	    <foreach collection="uidList" item="uid" index="index" open="(" separator="," close=")">
+           #{uid}
+        </foreach> or did=#{BMBH} )  order by createTime asc ) a
+		where ROWNUM &lt;= #{page.startIndex}+10 
+		)  
+		WHERE RN &gt;= #{page.startIndex}+1 
+      </select>
+      
+      <!-- 6.查询用户数量 -->
+      <select id="getQueryUserCount" resultType="int">
+         select count(*) from users where JH like '%${user.JH}%' and ZSXM like '%${user.ZSXM}%' and did like '%${user.did}%'
+	  </select>
+	  
+	 <!-- 7.分页显示查询用户列表-->
+     <select id="getQueryUserList" resultMap="UsersResultMap"> 
+	    select * from ( select a.*, ROWNUM RN from (
+	        select *  from users  where JH like '%${user.JH}%' and ZSXM like '%${user.ZSXM}%' and did like '%${user.did}%' order by createTime asc) a
+		where ROWNUM &lt;= #{page.startIndex}+10 
+		)  
+		WHERE RN &gt;= #{page.startIndex}+1 
+      </select>
+      
+      <!-- 8. 删除用户 -->
+	  <delete id="deleteUserById">
+	  	delete from users where id=#{id}
+	  </delete>
+      
+      <!-- 9.重置密码 -->
+      <update id="chongzhi">
+	  	update  users set MM='202cb962ac59075b964b07152d234b70' where id=#{id}
+	  </update>
+	  
+	  
+	  <!-- 10.根据用户id查找 -->
+	  <select id="getUserById" resultMap="UsersResultMap">
+	      select  *  from users  where id=#{id}  
+	  </select>
+	  
+	  <!-- 11.修改密码信息 -->
+	  <update id="editUserPwd">
+	     update users set MM=#{MM}  where id=#{id}
+	  </update>
+	  
+	  
+	  <!-- 12.跟新年休假天数 -->
+      <update id="updateNXJTS">
+	  	update  users set NXJTS=#{NXJTS} where id=#{id}
+	  </update>
+	  
+	  <!-- 13.获取审批人信息 -->
+	  <select id="getSprList" resultMap="UsersResultMap">
+	      select  *  from users  where did=#{param1} and ZW=#{param2} order by createTime asc
+	  </select>
+	  
+	  <!-- 14.获取政监处审批用户 -->
+	  <select id="getZjSprList" resultMap="UsersResultMap">
+	      select  *  from users  where did=#{param1} and (ZW='02' or ZW='03') order by createTime asc
+	  </select>
+	  
+	  <!-- 15.获取高警总队主要领导 -->
+	  <select id="getGjSprList" resultMap="UsersResultMap">
+	      select  *  from users  where did=#{param1} and ZW='03' order by createTime asc
+	  </select>
+	  
+	  <!-- 16.获取分管该部门的分管局领导,获取所有局分管领导以及党委委员 -->
+	  <select id="getFgSprList" resultMap="UsersResultMap">
+	      select  *  from users  where fgdid is not null  order by createTime asc
+	  </select>
+	  
+	  <!-- 17.局主要领导 -->
+	  <select id="getZySprList" resultMap="UsersResultMap">
+	      select  *  from users  where ZW='08'  order by createTime asc
+	  </select>
+	  
+	  <!-- 18.根据警号查找用户信息-->
+	  <select id="getByJH" resultMap="UsersResultMap">
+	      select  *  from users  where JH=#{param1} 
+	  </select>
+      
+</mapper>

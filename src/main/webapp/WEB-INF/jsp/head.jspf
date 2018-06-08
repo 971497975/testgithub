@@ -1,0 +1,28 @@
+<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<c:set value="${pageContext.request.contextPath }" var="ctx" />
+<title>信息管理系统</title>
+<meta name="renderer" content="webkit|ie-comp|ie-stand"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" /> 
+<!-- 下面是前端页面的样式 --> 
+<link rel="stylesheet" type="text/css" href="../css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="../css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="../js/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="../css/yema.css"/>
+<link rel="stylesheet" type="text/css" href="../css/titlesLine.css" /> 
+
+<!-- 下面是导入的js文件 -->
+<script type="text/javascript" src="../layer/laydate/laydate.js"></script>
+<script type="text/javascript" src="../js/dtreeck.js"></script>
+<script type="text/javascript" src="../js/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="../layer/layer.js"></script>
+<script type="text/javascript" src="../js/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="../js/H-ui.min.js"></script> 
+<script type="text/javascript" src="../js/H-ui.admin.js"></script>
+
+
+
+

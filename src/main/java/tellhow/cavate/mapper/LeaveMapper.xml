@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="tellhow.cavate.mapper.LeaveMapper" >
+<cache></cache>
+  <resultMap id="LeaveResultMap" type="tellhow.cavate.pojo.Leave" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="startDate" property="startDate" jdbcType="DATE" />
+    <result column="endDate" property="endDate" jdbcType="DATE" />
+    <result column="leaveType" property="leaveType" jdbcType="VARCHAR" />
+    <result column="cause" property="cause" jdbcType="VARCHAR" />
+    <result column="createUser" property="createUser" jdbcType="VARCHAR" />
+    <result column="createTime" property="createTime" jdbcType="DATE" />
+    
+    <result column="dysprid" property="dysprid" jdbcType="VARCHAR" />
+    <result column="dyspryj" property="dyspryj" jdbcType="VARCHAR" />
+    <result column="dysprjg" property="dysprjg" jdbcType="VARCHAR" />
+    <result column="dysprsj" property="dysprsj" jdbcType="DATE" />
+    
+    <result column="desprid" property="desprid" jdbcType="VARCHAR" />
+    <result column="despryj" property="despryj" jdbcType="VARCHAR" />
+    <result column="desprjg" property="desprjg" jdbcType="VARCHAR" />
+    <result column="desprsj" property="desprsj" jdbcType="DATE" />
+    
+    <result column="dssprid" property="dssprid" jdbcType="VARCHAR" />
+    <result column="dsspryj" property="dsspryj" jdbcType="VARCHAR" />
+    <result column="dssprjg" property="dssprjg" jdbcType="VARCHAR" />
+    <result column="dssprsj" property="dssprsj" jdbcType="DATE" />
+    
+    <result column="dsisprid" property="dsisprid" jdbcType="VARCHAR" />
+    <result column="dsispryj" property="dsispryj" jdbcType="VARCHAR" />
+    <result column="dsisprjg" property="dsisprjg" jdbcType="VARCHAR" />
+    <result column="dsisprsj" property="dsisprsj" jdbcType="DATE" />
+    
+    <result column="sfxj" property="sfxj" jdbcType="VARCHAR" />
+    <result column="xjzt" property="xjzt" jdbcType="VARCHAR" />
+    <result column="xjly" property="xjly" jdbcType="VARCHAR" />
+    <result column="xjsj" property="xjsj" jdbcType="DATE" />
+  </resultMap>
+  
+      <!-- 1.添加请假 -->
+      <insert id="addLeave" parameterType="tellhow.cavate.pojo.Leave">
+          insert into leave (id,startDate,endDate,days,otherDays,nxjts,leaveType,cause,spState,createUser,createTime,dysprid,sfxj) values
+          (#{id},#{startDate},#{endDate},#{days},#{otherDays},#{nxjts},#{leaveType},#{cause},#{spState},#{createUser},#{createTime},#{dysprid},#{sfxj})
+      </insert>
+  
+      <!-- 2.我的请假单数量 -->
+      <select id="getMyListCount" resultType="int">
+	 	select count(*) from leave where createUser=#{createUser}
+	  </select>
+  
+	  <!-- 3. 我的请假单列表 -->
+	  <select id="getMyList" resultMap="LeaveResultMap">
+	  	 select * from ( select a.*, ROWNUM RN from (
+	  	 	select * from leave where  createUser=#{createUser} order by createTime desc) a
+	        where ROWNUM &lt;= #{page.startIndex}+10 
+			)  
+			WHERE RN &gt;= #{page.startIndex}+1
+	  </select>
+  
+  
+      <!-- 4.跟新审批状态 -->
+      <update id="updateSp">
+	  	  update  leave set spState=#{spState} where id=#{id}
+	  </update>
+  
+	  <!-- 5.根据id获取请假单信息-->
+	  <select id="getById" resultMap="LeaveResultMap">
+	  	 select * from leave where id=#{id}
+	  </select>
+	  
+	  
+	  <!-- 6.我的审批记录数量 -->
+      <select id="getMySphistoryCount" resultType="int">
+	 	select count(*) from leave l
+	 	  	left join users u
+	 	  	on  l.createUser=u.id where u.ZSXM like '%${ZSXM}%' and u.did like '%${did}%' and (l.dysprid=#{uid} or l.desprid=#{uid} or l.dssprid=#{uid} or l.dsisprid=#{uid}) 
+	  </select>
+  
+	  <!-- 7. 我的审批记录列表 -->
+	  <select id="getMySphistory" resultMap="LeaveResultMap">
+	  	 select * from ( select a.*, ROWNUM RN from (
+	  	 	select l.* from leave l
+	 	  	left join users u
+	 	  	on  l.createUser=u.id where u.ZSXM like '%${ZSXM}%' and u.did like '%${did}%' and (l.dysprid=#{uid} or l.desprid=#{uid} or l.dssprid=#{uid} or l.dsisprid=#{uid}) order by l.createTime desc) a
+	        where ROWNUM &lt;= #{page.startIndex}+10 
+			)  
+			WHERE RN &gt;= #{page.startIndex}+1
+	  </select>
+	  
+	  <!-- 8.我的通过审批请假单数量 -->
+      <select id="getMyXjListCount" resultType="int">
+	 	select count(*) from leave where createUser=#{createUser} and spState='02'
+	  </select>
+  
+	  <!-- 9. 我的通过审批请假单列表 -->
+	  <select id="getMyXjList" resultMap="LeaveResultMap">
+	  	 select * from ( select a.*, ROWNUM RN from (
+	  	 	select * from leave where  createUser=#{createUser} and spState='02' order by createTime desc) a
+	        where ROWNUM &lt;= #{page.startIndex}+10 
+			)  
+			WHERE RN &gt;= #{page.startIndex}+1
+	  </select>
+	  
+	  
+	  <!-- 10.跟新销假 -->
+      <update id="updateXJ">
+	  	  update  leave set sfxj='01',xjsj=#{xjsj},xjzt=#{xjzt},xjly=#{xjly} where id=#{id}
+	  </update>
+	  
+	  <!-- 11.获取当前用户有多少待销假的请假单 -->
+      <select id="getDXJCount" resultType="int">
+	 	select count(*) from leave where createUser=#{param1} and spState='02' and sfxj='00'
+	  </select>
+	  
+	  <!-- 12. 删除请假单 -->
+	  <delete id="deleteById">
+	  	delete from leave  where id=#{id}
+	  </delete>
+	  
+	  
+	  <!-- 13.系统请假单数量 -->
+      <select id="getXtListCount" resultType="int">
+	 	select count(*) from leave l
+	 	  left join users u
+	 	  on  l.createUser=u.id
+	 	  where u.ZSXM like '%${ZSXM}%' and u.did like '%${did}%' and l.spState  like '%${spState}%'
+	 	  
+	  </select>
+  
+	  <!-- 14. 系统请假单列表 -->
+	  <select id="getXtList" resultMap="LeaveResultMap">
+	  	 select * from ( select a.*, ROWNUM RN from (
+	  	 	select l.* from leave l
+	 	    left join users u
+	 	    on  l.createUser=u.id
+	 	    where u.ZSXM like '%${ZSXM}%' and u.did like '%${did}%' and l.spState  like '%${spState}%'  order by l.createTime desc) a
+	        where ROWNUM &lt;= #{page.startIndex}+10 
+			)  
+			WHERE RN &gt;= #{page.startIndex}+1
+	  </select>
+	  
+	  <!-- 15.系统销假单数量 -->
+      <select id="getXtxjListCount" resultType="int">
+        select count(*) from leave l
+	 	  left join users u
+	 	  on  l.createUser=u.id
+	 	  where u.ZSXM like '%${ZSXM}%' and u.did like '%${did}%' and l.sfxj  like '%${sfxj}%'  and spState='02'
+	  </select>
+  
+	  <!-- 16. 系统销假单列表 -->
+	  <select id="getXtxjList" resultMap="LeaveResultMap">
+	  	 select * from ( select a.*, ROWNUM RN from (
+	  	 	select l.* from leave l
+	 	    left join users u
+	 	    on  l.createUser=u.id
+	 	    where u.ZSXM like '%${ZSXM}%' and u.did like '%${did}%' and l.sfxj  like '%${sfxj}%' and spState='02' order by l.createTime desc) a
+	        where ROWNUM &lt;= #{page.startIndex}+10 
+			)  
+			WHERE RN &gt;= #{page.startIndex}+1
+	  </select>
+	  
+	  
+</mapper>
